@@ -23,13 +23,10 @@
 		<h1>Slot</h1>
 		<p>This is a root component.</p>
 		<sub-component>
-			<template slot="title">Sub</template>
-			<template slot="describe">This is a describe.</template>
-		</sub-component>
-			<sub-component>
+			<!-- 具名插槽 -->
 			<template slot="title">BlackPink</template>
 			<template slot="describe">This is a describe.</template>
-			<!-- 作用域插槽 -->
+			<!-- 作用域插槽 使插槽可以访问子组件的内容 -->
 			<template slot="area" slot-scope="slotProps">
 				{{ slotProps.user }}
 			</template>
