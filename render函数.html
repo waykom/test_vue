@@ -34,6 +34,37 @@
 		    }
 		  }
 		})
+		Vue.component('sub-component',{
+			props:{
+				title:{
+					type:String,
+					default: 'title'
+				},
+				describe:{
+					type:String,
+					default:'describe'
+				}
+			},
+			render:function(createElement) {
+				return createElement(
+					'div',
+					{
+		    		style:{
+		    			color:'#fff',
+		    			padding: '10px',
+							marginTop: '10px',
+		    			backgroundColor:'gray'
+		    		}
+					},
+					[
+						/*createElement('h1',this.$slots.title),
+						createElement('em',this.$slots.describe)*/
+						createElement('h1',this.title),
+						createElement('em',this.describe)
+					]
+				)
+			}
+		})
 		new Vue({
 			render:h=>h(
 				'div',
@@ -47,7 +78,17 @@
 					h('h1','Vue'),
 					h('p','This is a root component.'),
 					h('anchored-heading',{attrs:{level:1}},'BlackPink'),
-					h('anchored-heading',{attrs:{level:1}},'Exo'),
+					//具名插槽的使用
+					/*h('sub-component',[
+						h('template',{slot:'title'},'default title'),
+						h('template',{slot:'describe'},'default describe'),
+						]),*/
+					h('sub-component',{
+						attrs:{
+							title:'EXO',
+							describe:'This is a slot.'
+						}
+					}),
 				]
 			)
 		}).$mount('#app')
