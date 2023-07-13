@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>slot插槽</title>
+	<style>
+		#root{
+			padding:10px;
+			background-color: #ddd;
+		}
+		.sub{
+			color: white;
+			padding: 10px;
+			margin-top: 10px;
+			background-color: gray;
+		}
+	</style>
+</head>
+<body>
+
+	<div id="root">
+		<h1>Slot</h1>
+		<p>This is a root component.</p>
+		<sub-component>
+			<template slot="title">Sub</template>
+			<template slot="describe">This is a describe.</template>
+		</sub-component>
+			<sub-component>
+			<template slot="title">BlackPink</template>
+			<template slot="describe">This is a describe.</template>
+			<!-- 作用域插槽 -->
+			<template slot="area" slot-scope="slotProps">
+				{{ slotProps.user }}
+			</template>
+		</sub-component>
+	</div>
+
+	<template id="sub">
+		<div class="sub">
+			<h1><slot name="title">default title</slot></h1>
+			<em><slot name="describe">default describe</slot></em>
+			<strong><slot name="area" :user="username"></slot></strong>
+		</div>
+	</template>
+
+	<script src="js/vue.js"></script>
+	<script>
+		new Vue({
+			name:'root',
+			components:{
+				'sub-component':{
+					template:'#sub',
+					data(){
+						return{
+							username:'张三'
+						}
+					}
+				}
+			},
+			data:{
+			}
+		}).$mount('#root')
+	</script>
+</body>
+</html>

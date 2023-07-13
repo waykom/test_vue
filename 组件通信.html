@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue中的组件间通信</title>
+	<style>
+		#root{
+			padding: 10px;
+			background-color: #ddd;
+		}
+		.bp{
+			width: 100%;
+			padding: 10px;
+			color: white;
+			background-color: gray;
+			box-sizing: border-box;
+		}
+	</style>
+</head>
+<body>
+
+	<!-- 根组件 -->
+	<div id="root">
+		<h1>Hello Vue!</h1>
+		<p>{{ msg }}</p>
+		<p>{{ data }}</p>
+		<button @click="change">修改数据</button>
+		<black-pink 
+			ref="child" 
+			@add="addSubData"
+			title="BlackPink" />
+	</div>
+
+		<!-- 子组件 -->
+	<template id="children">
+		<div class="bp">
+			<h1>{{ title }}</h1>
+			<h2>{{ dec }}</h2>
+			<p>This is a sub component</p>	
+			<button @click="send">发送数据到root</button>
+			<button @click="getAxiosData">发送axios请求</button>
+		</div>
+	</template>
+
+</body>
+<script src="js/vue.js"></script>
+<script src="js/axios.js"></script>
+<script>
+	Vue.component('BlackPink',{
+		template: '#children',
+		name:'BlackPink',
+		props:{
+			title:{
+				type: String,
+				default:'Default Title'
+			}
+		},
+		data:function() {
+			return{
+				dec:'Default Describe',
+				data:'This is this data for childred'
+			}
+		},
+		mounted:function() {
+		},
+		methods:{
+			send:function() {
+				// 通过$emit进行父子通信
+				this.$emit('add',this.data)
+				// 通过$bus进行任意组件间通信
+				this.$bus.$emit('foo',this.data)
+				// 通过$root进行任意组件间通信
+				this.$root.$emit('foo',this.data)
+			},
+			getAxiosData:function() {
+				axios.get('https://v1.hitokoto.cn/').then(res=>{
+					console.log(res)
+				})
+			}
+		}
+
+	})
+	new Vue({
+		el:'#root',
+		data:{
+			msg:'This is a root component.',
+			data:'String'
+		},
+		beforeCreate:function() {
+			Vue.prototype.$bus = new Vue()
+		},
+		created:function() {
+			console.log(this)
+		},
+		mounted:function() {
+			this.$bus.$on('foo',function(data) {
+				console.log('这是root里的$bus',data)
+			}),
+			this.$root.$on('foo',function(data) {
+				console.log('这是root里的$root',data)
+			})
+		},
+		methods:{
+			addSubData:function(data) {
+				console.log('这是root组件.',data)
+			},
+			change() {
+				this.data = 'String is changed'
+				console.log(this.$el.childNodes[4].innerHTML)
+				this.$nextTick(()=>{
+					console.log(this.$el.childNodes[4].innerHTML)
+				})
+			}
+		}
+	})
+</script>
+</html>

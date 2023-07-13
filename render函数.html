@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Vue中的render函数</title>
+</head>
+<body>
+	<div id="app"></div>
+	<script src="js/vue.js"></script>
+	<script>
+		Vue.component('anchored-heading', {
+		  render: function (createElement) {
+		    return createElement(
+		    	'div',
+		    	{
+		    		style:{
+		    			color:'#fff',
+		    			padding: '10px',
+							marginTop: '10px',
+		    			backgroundColor:'gray'
+		    		},
+		    	},
+		    	[
+		    		createElement('h'+this.level,this.$slots.default),
+		    		createElement('p','This is a sub component.')
+		    	]
+	    	)
+		  },
+		  props: {
+		    level: {
+		      type: Number,
+		      required: true
+		    }
+		  }
+		})
+		new Vue({
+			render:h=>h(
+				'div',
+				{
+					style:{
+						padding: '10px',
+						backgroundColor: '#ddd'
+					}
+				},
+				[
+					h('h1','Vue'),
+					h('p','This is a root component.'),
+					h('anchored-heading',{attrs:{level:1}},'BlackPink'),
+					h('anchored-heading',{attrs:{level:1}},'Exo'),
+				]
+			)
+		}).$mount('#app')
+	</script>
+
+</body>
+</html>
