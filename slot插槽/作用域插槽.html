@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>作用域插槽</title>
+	<!--
+		父传子
+		子传父
+	-->
+</head>
+<body>
+	
+	<template id="sub">
+		<div>
+			<ul>
+				<li v-for="todo in todos" :key="todo.id">
+					<!--
+						我们为每个 todo 准备了一个插槽，
+						将 `todo` 对象作为一个插槽的 prop 传入。
+					-->
+					<slot name="todo" :todo="todo">
+						<!-- 后备内容 -->
+						{{ todo.text }}
+					</slot>
+				</li>
+			</ul>
+		</div>
+	</template>
+	
+	<div id="app">
+		<sub-component :todos="todos">
+			<!-- 解构插槽props写法 -->
+			<template #todo="{ todo }">
+				<span v-if="todo.isComplete">✔</span>
+				{{ todo.text }}
+			</template>
+		</sub-component>
+	</div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+	new Vue({
+		data:{
+			todos:[
+				{id:1,text:'吃饭',isComplete:true},
+				{id:2,text:'睡觉',isComplete:true},
+				{id:3,text:'打游戏',isComplete:false},
+				{id:4,text:'抽烟',isComplete:false},
+				{id:5,text:'烫头',isComplete:true},
+			]
+		},
+		components:{
+			subComponent:{
+				template:'#sub',
+				props:['todos']
+			}
+		}
+	}).$mount("#app")
+</script>
+</html>

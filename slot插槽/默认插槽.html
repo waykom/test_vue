@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>默认插槽</title>
+</head>
+<body>
+	<template id="sub">
+		<div>
+			<!-- 
+				1.默认插槽插入的位置
+				2.slot标签里的内容是默认内容，当父组件没有插入内容时，就显示默认内容
+			 -->
+			<slot>This is a default slot content.</slot>
+		</div>
+	</template>
+	
+	<div id="app">
+		<h1>This is root-component title.</h1>
+		<sub-component>
+			<!-- 父组件插入的内容 -->
+			<h2>This is sub-component title.</h2>
+		</sub-component>
+	</div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+	new Vue({
+		components: {
+			subComponent: {
+				template: '#sub'
+			}
+		},
+	}).$mount("#app")
+</script>
+</html>

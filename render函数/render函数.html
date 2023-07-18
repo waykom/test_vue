@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>render函数</title>
+</head>
+<body>
+	<div id="app"></div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+/*
+https://v2.cn.vuejs.org/v2/guide/render-function.html#%E6%B7%B1%E5%85%A5%E6%95%B0%E6%8D%AE%E5%AF%B9%E8%B1%A1
+*/
+	new Vue({
+		components:{
+			subComponent:{
+				template:
+				`
+					<div>
+						<h2>这是子组件的title</h2>
+					</div>
+				`,
+				
+			}
+		},
+		render:function(createElement) {
+			return createElement('div',{
+				attrs:{
+					class:'root'
+				},
+				style:{
+					padding: '10px',
+					backgroundColor: '#ddd'
+				}
+			},[
+				createElement('h1','这是root的title'),
+				createElement('sub-component',{
+					style:{
+						backgroundColor: 'gray',
+						color: 'white',
+						padding: '10px'
+					}
+				})
+			])
+		}
+	}).$mount("#app")
+</script>
+</html>
