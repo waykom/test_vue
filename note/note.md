@@ -23,11 +23,29 @@
 > 父类添加 `::-webkit-scrollbar` 伪类元素，添加一条声明 `display: none;`
 
 ```css
- 	father::-webkit-scrollbar {
-  	display: none;
-  }
+    father::-webkit-scrollbar {
+        display: none;
+    }
 ```
 
 
 
-### CSS 设置
+### CSS 实现倒三角最简单的方法
+
+> HTML
+
+```html
+	<div class="box"></div>
+```
+
+> CSS
+
+```css
+	.box {
+		width: 0;
+		height: 0;
+		border: 50px solid transparent;
+		border-top-color: red;
+	}
+```
+
