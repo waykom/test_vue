@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>$emit()触发自定义事件</title>
+	<!-- 子传父 -->
+</head>
+<body>
+	
+	<style>
+		#app{
+			background-color: #ddd;
+			padding: 10px;
+		}
+		#sub{
+			background-color: gray;
+			color: #ddd;
+			padding: 10px;
+		}
+	</style>
+	
+	<template id="sub">
+		<div id="sub">
+			<h2>{{ member }}</h2>
+		</div>
+	</template>
+	
+	<div id="app">
+		<h1>{{ team }}</h1>
+		<sub-item></sub-item>
+	</div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+	new Vue({
+		components:{
+			subItem:{
+				template: '#sub',
+				data: function() {
+					return {
+						member: 'Rose'
+					}
+				}
+			}
+		},
+		data:{
+			team: 'BlackPink'
+		}
+	}).$mount("#app")
+</script>
+</html>
