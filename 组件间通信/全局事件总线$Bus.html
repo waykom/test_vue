@@ -4,6 +4,7 @@
 	<meta charset="utf-8">
 	<title>全局事件总线$Bus</title>
 	<!-- 实现任意组件间的通信 -->
+	<link rel="stylesheet" href="../css/bootstrap.min.css">
 </head>
 <body>
 	
@@ -40,13 +41,16 @@
 	<div id="app">
 		<h1>{{ team }}</h1>
 		<p>received: <em>{{ received }}</em></p>
+		<button @click="sendToJennie">send msg to Jennie.</button>
 		
 		<!-- 使用两个子组件 -->
 		<rose></rose>
 		<jennie></jennie>
+		<button type="button" class="btn btn-primary">Primary</button>
 	</div>
 </body>
 <script src="../js/vue.js"></script>
+<script src="../js/bootstrap.min.js"></script>
 <script>
 	new Vue({
 		components:{
@@ -114,7 +118,8 @@
 		},
 		data:{
 			team: 'BlackPink',
-			received: ''
+			received: '',
+			msg: 'We are BlackPink!'
 		},
 		beforeCreate: function() {
 			// 注册全局事件总线 $Bus
@@ -124,6 +129,11 @@
 			this.$Bus.$on('bp-msg', ( msg ) => {
 				this.received = msg
 			})
+		},
+		methods: {
+			sendToJennie: function() {
+				this.$Bus.$emit('rose-msg', this.msg)
+			}
 		}
 	}).$mount("#app")
 </script>
