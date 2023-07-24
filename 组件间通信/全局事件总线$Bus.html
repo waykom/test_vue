@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>全局事件总线$Bus</title>
+	<!-- 实现任意组件间的通信 -->
+</head>
+<body>
+	
+	<style>
+		#app{
+			background-color: #ddd;
+			padding: 10px;
+		}
+		.rose, .jennie{
+			background-color: gray;
+			color: #fff;
+			padding: 10px;
+			margin-bottom: 20px;
+		}
+	</style>
+	
+	<template id="rose">
+		<div class="rose">
+			<h2>{{ member }}</h2>
+			<p>received: <em>{{ received }}</em></p>
+			<button @click="sendToJennie">send msg to Jennie.</button>
+			<button @click="sendToBlackPink">send msg to BlackPink.</button>
+		</div>
+	</template>
+	
+	<template id="jennie">
+		<div class="jennie">
+			<h2>{{ member }}</h2>
+			<p>received: <em>{{ received }}</em></p>
+			<button @click="sendToRose">send msg to Rose.</button>
+		</div>
+	</template>
+	
+	<div id="app">
+		<h1>{{ team }}</h1>
+		<p>received: <em>{{ received }}</em></p>
+		
+		<!-- 使用两个子组件 -->
+		<rose></rose>
+		<jennie></jennie>
+	</div>
+</body>
+<script src="../js/vue.js"></script>
+<script>
+	new Vue({
+		components:{
+			// 注册两个子组件
+			rose:{
+				template: '#rose',
+				data: function() {
+					return {
+						member: 'Rose',
+						msg: 'My name is Rose!',
+						received: ''
+					}
+				},
+				mounted: function() {
+					this.$Bus.$on('jennie-msg',( msg ) => {
+						this.received = msg
+					})
+				},
+				methods: {
+					sendToJennie: function() {
+						// 使用全局事件总线中的 $emit()
+						this.$Bus.$emit('rose-msg', this.msg)
+					},
+					sendToBlackPink: function() {
+						this.$Bus.$emit('bp-msg', this.msg)
+					}
+				}
+			},
+			jennie:{
+				template: '#jennie',
+				data: function() {
+					return {
+						member: 'Jennie',
+						msg: 'My name is Jennie!',
+						received: ''
+					}
+				},
+				mounted: function() {
+					/* this.$Bus.$on('rose-msg', function(msg) {
+						console.log(this)	// => 一个新的Vue实例
+					}) */
+					
+					/* 
+						第一种：内部回调
+						值得注意：$on 里的回调函数必须是箭头函数，这样的this才会指向当前组件实例
+					*/
+					this.$Bus.$on('rose-msg', ( msg ) => {
+						console.log( '--这是内部的回调--', this)
+						this.received = msg
+					})
+					
+					// 第二种：外部回调
+					// this.$Bus.$on('rose-msg', this.getReceivedMsg)
+				},
+				methods: {
+					getReceivedMsg( msg ) {
+						console.log( '--这是getReceivedMsg方法--', this)
+						this.received = msg
+					},
+					sendToRose: function() {
+						this.$Bus.$emit('jennie-msg', this.msg)
+					}
+				}
+			}
+		},
+		data:{
+			team: 'BlackPink',
+			received: ''
+		},
+		beforeCreate: function() {
+			// 注册全局事件总线 $Bus
+			Vue.prototype.$Bus = new Vue()
+		},
+		mounted: function() {
+			this.$Bus.$on('bp-msg', ( msg ) => {
+				this.received = msg
+			})
+		}
+	}).$mount("#app")
+</script>
+</html>
