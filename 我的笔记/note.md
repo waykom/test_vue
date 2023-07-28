@@ -78,3 +78,21 @@ text{
 }
 ```
 
+
+
+### uni-swiper 改变面板指示点样式为横条
+
+>   若为全局更改，推荐在App.vue中加入
+
+```css
+uni-swiper .uni-swiper-dot {
+	width: 60rpx;
+	height: 4rpx;	
+	border-radius: 6rpx;
+}
+uni-swiper .uni-swiper-dot-active {
+	width: 60rpx;
+	border-radius: 6rpx;
+}
+```
+
