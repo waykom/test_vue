@@ -5,17 +5,17 @@
 > 对于父元素
 
 ```css
-	// 设置为弹性盒子
-	display: flex;
-	// 设置元素溢出时所需的行为,如果内容溢出，则浏览器提供滚动条。
-	overflow: auto;
+// 设置为弹性盒子
+display: flex;
+// 设置元素溢出时所需的行为,如果内容溢出，则浏览器提供滚动条。
+overflow: auto;
 ```
 
 > 对于各个子元素
 
 ```css
-	// 设置flex元素的收缩大小
-	flex-shrink: 0;
+// 设置flex元素的收缩大小
+flex-shrink: 0;
 ```
 
 > 对于移动端开发或小程序开发，横向滚动条有时会影响美观，为此可以隐藏掉横向滚动条
@@ -23,9 +23,9 @@
 > 父类添加 `::-webkit-scrollbar` 伪类元素，添加一条声明 `display: none;`
 
 ```css
-    father::-webkit-scrollbar {
-        display: none;
-    }
+father::-webkit-scrollbar {
+    display: none;
+}
 ```
 
 
@@ -35,18 +35,65 @@
 > HTML
 
 ```html
-	<div class="box"></div>
+<div class="box"></div>
 ```
 
 > CSS
 
 ```css
-	.box {
-		width: 0;
-		height: 0;
-		border: 50px solid transparent;
-		border-top-color: red;
-	}
+.box {
+    width: 0;
+    height: 0;
+    border: 50px solid transparent;
+    border-top-color: red;
+}
+```
+
+
+
+### CSS 处理文字溢出
+
+> 单行文字溢出在文字溢出处显示省略号
+
+```css
+farther{
+  	overflow: hidden;
+}
+child {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+```
+
+> 多行文字溢出
+
+```css
+text{
+    display:-webkit-box;
+    // 设置可以显示的行数
+    -webkit-line-clamp:8;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+```
+
+
+
+### uni-swiper 改变面板指示点样式为横条
+
+>   若为全局更改，推荐在App.vue中加入
+
+```css
+uni-swiper .uni-swiper-dot {
+	width: 60rpx;
+	height: 4rpx;	
+	border-radius: 6rpx;
+}
+uni-swiper .uni-swiper-dot-active {
+	width: 60rpx;
+	border-radius: 6rpx;
+}
 ```
 
 

@@ -5,14 +5,27 @@
 		<title></title>
 	</head>
 	<style>
-		.box{
-			width: 0px;
-			height: 0px;
-			border: 10px solid transparent;
-			border-top-color: red;
+		.active{
+			color: red;
 		}
 	</style>
 	<body>
-		<div class="box"></div>
+		<ul>
+			<li>首页</li>
+			<li>个人收藏</li>
+			<li>记录</li>
+			<li>我的</li>
+		</ul>
 	</body>
+	<script type="text/javascript">
+		let nodes = document.querySelectorAll('ul li')
+		for (let i = 0; i < nodes.length; i ++) {
+			nodes[i].addEventListener('click', function() {
+				for (let j = 0; j < nodes.length; j ++) {
+					nodes[j].className = ''
+				}
+				this.className = 'active'
+			})
+		}
+	</script>
 </html>
