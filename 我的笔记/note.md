@@ -49,3 +49,37 @@
 	}
 ```
 
+
+
+### 如何在 repl.it 中创建一个 Web 服务器?
+
+> 要做到这一点，在你的项目中创建一个新的文件，叫做 `keep_alive.py`
+>
+> 然后添加以下代码:
+
+```python
+    from flask import Flask
+    from threading import Thread
+
+    app = Flask('')
+
+    @app.route('/')
+    def home():
+        return "Hello. I am alive!"
+
+    def run():
+      app.run(host='0.0.0.0',port=8080)
+
+    def keep_alive():
+        t = Thread(target=run)
+        t.start()
+```
+
+> 在 `main.py` 的顶部添加以下一行来导入服务器。
+
+```python
+    from keep_alive import keep_alive
+```
+
+> 运行Web服务器 `keep_alive()`
+
